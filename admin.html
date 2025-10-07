@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Add Marksheet</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Junior High School - Admin Panel</h1>
+
+        <form id="marksheetForm">
+            <label>Student Name:</label>
+            <input type="text" id="studentName" required>
+
+            <label>Roll Number:</label>
+            <input type="text" id="rollNumber" required>
+
+            <label>Date of Birth:</label>
+            <input type="date" id="dob" required>
+
+            <div id="subjectsContainer">
+                <h3>Subjects & Marks</h3>
+                <!-- Dynamic subjects will appear here -->
+            </div>
+            <button type="button" id="addSubjectBtn">+ Add Subject</button>
+
+            <p>Total Marks: <span id="totalMarks">0</span></p>
+            <p>Percentage: <span id="percentage">0</span>%</p>
+            <p>Grade: <span id="grade">-</span></p>
+
+            <button type="submit">Save Marksheet</button>
+        </form>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
