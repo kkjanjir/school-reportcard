@@ -1,44 +1,38 @@
-// student.js
+document.getElementById("searchForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-document.getElementById('searchForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  const name = document.getElementById("name").value;
+  const roll = document.getElementById("roll").value;
+  const dob = document.getElementById("dob").value;
 
-    let name = document.getElementById('studentName').value;
-    let roll = document.getElementById('rollNumber').value;
-    let dob = document.getElementById('dob').value;
+  try {
+    const res = await fetch(
+      `https://school-reportcard2.onrender.com/api/search-marksheet?name=${encodeURIComponent(
+        name
+      )}&roll=${encodeURIComponent(roll)}&dob=${encodeURIComponent(dob)}`
+    );
 
-    try {
-        let res = await fetch(`https://school-reportcard2.onrender.com/api/search-marksheet?name=${name}&roll=${roll}&dob=${dob}`)
-        });
-        let data = await res.json();
-        if(data.success){
-            displayMarksheet(data.marksheet);
-        } else {
-            alert('Marksheet not found');
-        }
-    } catch(err){
-        console.error(err);
-        alert('Error searching marksheet');
-    }
-});
+    const data = await res.json();
 
-function displayMarksheet(marksheet){
-    let container = document.getElementById('marksheetContent');
-    container.innerHTML = `
-        <p><strong>Name:</strong> ${marksheet.name}</p>
-        <p><strong>Roll No:</strong> ${marksheet.roll}</p>
-        <p><strong>DOB:</strong> ${marksheet.dob}</p>
-        <table border="1" cellpadding="5">
-            <tr><th>Subject</th><th>Marks</th></tr>
-            ${marksheet.subjects.map(s => `<tr><td>${s.subjectName}</td><td>${s.marks}</td></tr>`).join('')}
+    if (res.ok && data) {
+      document.getElementById("result").innerHTML = `
+        <h3>${data.name}</h3>
+        <p><strong>Roll:</strong> ${data.roll}</p>
+        <p><strong>DOB:</strong> ${data.dob}</p>
+        <table>
+          <tr><th>Subject</th><th>Marks</th></tr>
+          ${data.subjects
+            .map((subj, i) => `<tr><td>${subj}</td><td>${data.marks[i]}</td></tr>`)
+            .join("")}
         </table>
-        <p><strong>Total:</strong> ${marksheet.total}</p>
-        <p><strong>Percentage:</strong> ${marksheet.percentage}%</p>
-        <p><strong>Grade:</strong> ${marksheet.grade}</p>
-    `;
-    document.getElementById('marksheetResult').style.display = 'block';
-
-    document.getElementById('downloadPdfBtn').onclick = () => {
-        html2pdf().from(container).save(`${marksheet.name}_Marksheet.pdf`);
+        <p><strong>Total:</strong> ${data.total}</p>
+        <p><strong>Percentage:</strong> ${data.percentage}%</p>
+      `;
+    } else {
+      document.getElementById("result").innerHTML = `<p>No record found.</p>`;
     }
-}
+  } catch (err) {
+    document.getElementById("result").innerHTML = `<p>⚠️ Server error.</p>`;
+    console.error(err);
+  }
+});
