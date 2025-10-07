@@ -8,10 +8,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     let dob = document.getElementById('dob').value;
 
     try {
-        let res = await fetch('http://localhost:3000/api/search-marksheet', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name, roll, dob})
+        let res = await fetch(`https://school-reportcard2.onrender.com/api/search-marksheet?name=${name}&roll=${roll}&dob=${dob}`)
         });
         let data = await res.json();
         if(data.success){

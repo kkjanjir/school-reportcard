@@ -75,7 +75,7 @@ document.getElementById('marksheetForm').addEventListener('submit', async (e) =>
 
     // Send to backend
     try {
-        let res = await fetch('http://localhost:3000/api/add-marksheet', {
+        let res = await fetch('https://school-reportcard2.onrender.com/api/add-marksheet', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
